@@ -1,7 +1,11 @@
-import { isMaxAndMinLengthValid, hasDoubleSpace, hasConsecutiveChars
-    ,services
- } from './global.js';
+import {
+    isMaxAndMinLengthValid,
+    hasDoubleSpace,
+    hasConsecutiveChars,
+    services
+} from './global.js';
 
+// ========== USERNAME VALIDATION ==========
 function usernameValidation() {
     const form = document.forms["myForm"];
     const username = form["username"].value.trim();
@@ -39,16 +43,16 @@ function usernameValidation() {
     // If valid, hide the error message
     error_message.classList.add("d-none");
     error_message.textContent = "";
-
     return true;
 }
 
+// ========== PASSWORD VALIDATION ==========
 function passwordValidation() {
     const form = document.forms["myForm"];
     const password = form["password"].value.trim();
     const error_message = document.getElementById("error-message");
 
-    if (password === "" || !password || password.length === 0) {
+    if (!password) {
         error_message.classList.remove("d-none");
         error_message.textContent = "Password is required.";
         return false;
@@ -56,12 +60,10 @@ function passwordValidation() {
 
     error_message.classList.add("d-none");
     error_message.textContent = "";
-
     return true;
 }
 
-
-
+// ========== ERROR COUNT FROM LOCAL STORAGE ==========
 let error_counts = 0;
 try {
     const storedErrorCounts = JSON.parse(localStorage.getItem("error-counts"));
@@ -71,80 +73,98 @@ try {
     error_counts = 0;
 }
 
+// ========== TIMER START FUNCTION ==========
+function timerStart(countdownTime) {
+    const timerElement = document.getElementById("timer");
+    const endTime = Date.now() + countdownTime * 1000;
+    localStorage.setItem("lockoutEndTime", endTime);
 
+    // Prevent back and forward navigation
+    // history.pushState(null, null, location.href);
+    // window.onpopstate = () => history.go(0);
 
-function timerStart(countdownTime){
-    // Set the countdown time in seconds (e.g., 5 minutes = 300 seconds)
-    // let countdownTime = 300; // 5 minutes
+    // Prevent refresh or tab close
+    // window.addEventListener("onload", function (e) {
+    //     window.onpopstate = () => history.go(1);
+    // });
 
-    // Function to format the time in mm:ss
+    // Format mm:ss
     function formatTime(seconds) {
-        let minutes = Math.floor(seconds / 60);
-        let remainingSeconds = seconds % 60;
-
-        // Format to always show two digits (e.g., 09 instead of 9)
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
         return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     }
 
-    // Update the timer every second
-    const timerElement = document.getElementById("timer");
-    const interval = setInterval(function() {
-        if (countdownTime <= 0) {
-            clearInterval(interval); // Stop the countdown when it reaches zero
-            // timerElement.remove()
+    // Update timer
+    const interval = setInterval(() => {
+        const remainingTime = Math.floor((endTime - Date.now()) / 1000);
+
+        if (remainingTime <= 0) {
+            clearInterval(interval);
+            timerElement.textContent = "";
+            localStorage.removeItem("lockoutEndTime");
+            window.onpopstate = null;
         } else {
-            timerElement.textContent = formatTime(countdownTime);
-            countdownTime--; // Decrease the time
+            timerElement.textContent = formatTime(remainingTime);
         }
     }, 1000);
 }
 
+// ========== RESTORE TIMER ON PAGE LOAD ==========
+window.addEventListener("DOMContentLoaded", () => {
+    const storedEndTime = localStorage.getItem("lockoutEndTime");
 
+    if (storedEndTime) {
+        const remainingTime = Math.floor((Number(storedEndTime) - Date.now()) / 1000);
+        history.pushState(null, null, location.href);
+        window.onpopstate = () => history.go(0);
+        if (remainingTime > 0) {
+            timerStart(remainingTime);
+            history.pushState(null, null, location.href);
+            window.onpopstate = () => history.go(0);
+        } else {
+            localStorage.removeItem("lockoutEndTime");
+        }
+    }
+});
+
+// ========== LOGIN FUNCTION ==========
 async function login(username, password) {
     const request = await services("POST", { username, password }, "login");
     const error_message = document.getElementById("error-message");
 
-    if(request.data.message ==="The password is wrong."){
+    if (request.data.message === "The password is wrong.") {
         error_message.classList.remove("d-none");
-        error_message.textContent = `${request.data.message}`;
+        error_message.textContent = request.data.message;
 
-        if(error_counts > 9) error_counts = 0;
-        
-        error_counts = error_counts + 1
+        if (error_counts > 9) error_counts = 0;
+        error_counts += 1;
 
-        localStorage.setItem("error-counts", JSON.stringify(error_counts))
-
-        const latestCount = JSON.parse(localStorage.getItem("error-counts"));
-
-
-        error_counts = Number(latestCount);
-
+        localStorage.setItem("error-counts", JSON.stringify(error_counts));
+        error_counts = Number(JSON.parse(localStorage.getItem("error-counts")));
 
         return;
     }
 
-    console.log(error_counts)
-        
-     // Handle different error messages
     const errorMessages = [
         "Username is not registered.",
         "Username and password are required."
     ];
 
-    // Check if the response contains any of the error messages
     if (errorMessages.includes(request.data.message)) {
         error_message.classList.remove("d-none");
         error_message.textContent = request.data.message;
-        return; // Early return on error
+        return;
     }
 
     return request;
 }
 
+// ========== VALIDATE LOGIN FORM ON SUBMIT ==========
 async function validateLoginForm(event) {
     event.preventDefault();
 
-    const form = document.forms["myForm"]; 
+    const form = document.forms["myForm"];
     const username = form["username"].value.trim();
     const password = form["password"].value.trim();
 
@@ -154,20 +174,18 @@ async function validateLoginForm(event) {
     if (isUsernameValid && isPasswordValid) {
         const response = await login(username, password);
 
-        if(error_counts === 3){
+        if (error_counts === 3) {
             timerStart(15);
-        }else if(error_counts === 6){
+        } else if (error_counts === 6) {
             timerStart(30);
-        }else if(error_counts === 9){
+        } else if (error_counts === 9) {
             timerStart(60);
         }
 
-        if (response !== undefined && response.data.message === "Login successful!") {
+        if (response && response.data.message === "Login successful!") {
             localStorage.setItem("account", JSON.stringify(response.data.user));
-            console.log(response.data.message)
+            console.log(response.data.message);
         }
-
-
     } else {
         console.log("Validation ERROR");
     }
@@ -175,5 +193,5 @@ async function validateLoginForm(event) {
     return true;
 }
 
+// ========== ATTACH EVENT LISTENER ==========
 document.querySelector("form").addEventListener("submit", validateLoginForm);
-
