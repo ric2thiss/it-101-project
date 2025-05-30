@@ -84,14 +84,15 @@ export function checkPasswordStrength(password) {
     const hasSpecialChar = /[!@#$%^&*()_+{}\[\]:;"'<>,.?/~`]/.test(password);
 
     if (length >= 8 && hasLetter && hasDigit && hasSpecialChar) {
-        return "strong";
+        return "Strong";
     } else if (length >= 8 && hasLetter && hasDigit) {
-        return "medium";
+        return "Medium";
     } else if (length >= 8 && hasLetter) {
-        return "weak";
+        return "Weak";
     } else {
-        return "invalid";
+        return "Invalid";
     }
+
 }
 
 export function isPasswordMatch(password, reEnteredPassword) {
@@ -101,3 +102,42 @@ export function isPasswordMatch(password, reEnteredPassword) {
 
     return true;
 }
+
+
+
+// Service layer
+const insert = async (data) => {
+    const URL = `http://localhost/paquibot/server/registration.php`;
+
+    try {
+        const response = await fetch(URL, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        // console.table(result);
+        return result;
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
+// Controller layer or function to handle request
+export const services = async (method, data) => {
+    const request = method.trim().toUpperCase();
+
+    if (request === "POST") {
+         return await insert(data);
+    }
+    
+};
+

@@ -3,194 +3,218 @@ import {
     isValidIDFormat, hasLetter, hasDoubleSpace,
     isFirstLetterCapital, hasConsecutiveChars,
     isWordFormatValid, isExtensionValid,
-    isEmailValid
+    isEmailValid, hasDigit, checkPasswordStrength,
+    isPasswordMatch, services
 
 } from './global.js';
 
 
 function IDNumberValidation(){
     const idNumberInput = document.getElementById("idnumber").value;
+    const idnumber_error = document.getElementById("idnumber-error");
 
     if(!idNumberInput){
-        console.log("Please enter your Id number")
+        idnumber_error.textContent = "Please enter your Id number";
         return false;
     }
 
     if(hasLetter(idNumberInput)){
-        console.log("No letters allowed in the ID input. Please enter numbers only.");
+        idnumber_error.textContent = "No letters allowed in the ID input. Please enter numbers only."
         return false;
     }
 
     if (!isMaxAndMinLengthValid(idNumberInput, 6, 10)) {
-        console.log("The ID Number must be at least 6 to 10 digits");
+        idnumber_error.textContent = "The ID Number must be at least 6 to 10 digits"
         return false;
     }
 
     if(hasSpecialChar(idNumberInput)){
-        console.log(isIdNumberHasSpecialChar)
-        console.log("Id Number must not contain special Character except -");
+        idnumber_error.textContent = "Id Number must not contain special Character except -"
         return false;
     }
 
     if(!isValidIDFormat(idNumberInput)){
-        console.log("ID number must follow this format xxxx-xxxx");
+        idnumber_error.textContent = "ID number must follow this format xxxx-xxxx"
         return false;
     }
 
-    
+    idnumber_error.textContent = ''
 
     return true;
 }
 
 function firstNameValidation(){
     const firstname = document.getElementById("firstname").value;
+    const firstname_error = document.getElementById("firstname-error");
 
     if(!firstname){
-        console.log("Please enter your firstname")
+        firstname_error.textContent = "Please enter your first name."
         return false;
     }
 
     if (!isMaxAndMinLengthValid(firstname, 3, 15)) {
-        console.log("The first name must be at least 3 to 10 letters");
+        firstname_error.textContent = "The first name must be between 3 and 15 letters."
         return false;
     }
 
     if(hasDoubleSpace(firstname)){
-        console.log("The First Name Field must not have 2 or more spaces");
+        firstname_error.textContent = "The first name field must not contain two or more consecutive spaces."
         return false;
     }
 
     if(!isFirstLetterCapital(firstname)){
-        console.log("First letter of every word in the firstname field must be capital. Example: Juan Karlos");
+        firstname_error.textContent = "The first letter of every word in the first name must be capitalized. Example: Juan Karlos."
         return false;
     }
 
     if (!isWordFormatValid(firstname)) {
-        console.log("Your firstame is invalid format! Please follow this format example Juan Karlos. Only in the first letter of every word must be capital letter.");
+        firstname_error.textContent = "Invalid first name format. Example: Juan Karlos. Only the first letter of each word should be capitalized."
         return false;
     }
 
     if(hasConsecutiveChars(firstname)){
-        console.log("Firstname must not have 3 the same consecutive characters. Example: hhh or HHH");
+        firstname_error.textContent = "The first name must not contain three identical consecutive characters. Example: hhh or HHH."
         return false;
     }
 
-    
-
+    firstname_error.textContent = '';
     return true;
 }
 
+
 function lastNameValidation(){
     const lastname = document.getElementById("lastname").value;
+    const lastname_error = document.getElementById("lastname-error")
+
+    if(lastname_error === null) return console.log("Last Name Error field is null");
 
     if(!lastname){
-        console.log("Please enter your lastname")
+        lastname_error.textContent = "Please enter your last name."
         return false;
     }
 
     if (!isMaxAndMinLengthValid(lastname, 3, 15)) {
-        console.log("The lastname must be at least 3 to 10 letters");
+        lastname_error.textContent = "The last name must be between 3 and 15 letters."
         return false;
     }
 
     if(hasDoubleSpace(lastname)){
-        console.log("The lastname field must not have 2 or more spaces");
+        alastname_error.textContent = "The last name field must not contain two or more consecutive spaces."
         return false;
     }
 
     if(!isFirstLetterCapital(lastname)){
-        console.log("First letter of every word in the lastname field must be capital. Example: Juan Karlos");
+        lastname_error.textContent = "The first letter of every word in the last name must be capitalized. Example: Juan Karlos."
         return false;
     }
 
     if (!isWordFormatValid(lastname)) {
-        console.log("Your lastname is invalid format! Please follow this format example Juan Karlos. Only in the first letter of every word must be capital letter.");
+        lastname_error.textContent = "Invalid last name format. Example: Juan Karlos. Only the first letter of each word should be capitalized."
         return false;
     }
 
     if(hasConsecutiveChars(lastname)){
-        console.log("Lastname must not have 3 the same consecutive characters. Example: hhh or HHH");
+        lastname_error.textContent = "The last name must not contain three identical consecutive characters. Example: hhh or HHH."
         return false;
     }
 
-    
+    lastname_error.textContent = ''
 
     return true;
 }
 
 function middleNameValidation(){
     const middleInitial = document.getElementById("middleinitial").value
+    const middleinitial_error = document.getElementById("middleinitial-error");
+
+    if(middleinitial_error === null) return console.log("Middle initial error field is null");
 
     if(!isMaxAndMinLengthValid(middleInitial, 0, 1)){
-        console.log("Middle Initial must only 1-2 characters.");
+        middleinitial_error.textContent = "Middle Initial must only 1-2 characters."
         return false;
     }
+
+    middleinitial_error.textContent = ''
 
     return true;
 }
 
 function extentionNameValidation(){
-    const extName = document.getElementById("extensionname").value
+    const extName = document.getElementById("extensionname").value;
+    const extensionname_error = document.getElementById("extensionname-error");
+
+    if(extensionname_error === null) return console.log("Extension Name error field is null");
 
     if(hasDoubleSpace(extName)){
-        console.log("Extension name must not have double spaces.");
+        extensionname_error.textContent = "Extension name must not contain double spaces."
         return false;
     }
 
     if(!isMaxAndMinLengthValid(extName, 0, 5)){
-        console.log("Extension Name must not greater than 5 characters");
+        extensionname_error.textContent = "Extension name must not be longer than 5 characters."
         return false;
     }
 
     if(!isExtensionValid(extName)){
-        console.log("Extension Name must be valid. The lists are the example Extension name ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'Jr', 'Sr']");
+        extensionname_error.textContent = "Extension name must be valid. Examples: 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'Jr', 'Sr'."
         return false;
     }
+
+    extensionname_error.textContent = ''
 
     return true;
 }
 
+
 function emailValidation(){
-    const email = document.getElementById("email").value
+    const email = document.getElementById("email").value;
+    const email_error = document.getElementById("email-error")
+
+    if(email_error === null) return console.log("Email Error field is null")
 
     if(!email){
-        console.log("Email is required!");
+        email_error.textContent = "Email is required."
         return false;
     }
 
     if (!isMaxAndMinLengthValid(email, 15, 20)) {
-        console.log("The Email is too long. It must be at least 15 to 20 characters");
+        email_error.textContent = "The email must be between 15 and 20 characters."
         return false;
     }
 
     if(hasDoubleSpace(email)){
-        console.log("The email field must not have 2 or more spaces");
+        email_error.textContent = "The email field must not contain two or more consecutive spaces."
         return false;
     }
 
     if(!isEmailValid(email)){
-        console.log("Email is invalid format. Please follow this format, example: myemail@gmail.com");
+        email_error.textContent = "Invalid email format. Please follow this format: myemail@gmail.com."
         return false;
     }
 
+    email_error.textContent = ''
     return true;
-
-
 }
+
 
 function sexValidation(){
       const form = document.forms["myForm"];
       const sex = form["sex"].value;
 
+      const sex_error = document.getElementById("sex-error");
+
+      if(sex_error === null) return console.log("Sex error field is null")
+
       if(!sex){
-        console.log("Sex is required! Please select for your identity.");
+        sex_error.textContent = "Sex is required. Please select your gender identity."
         return false;
       }
 
+      sex_error.textContent = ''
       return true;
 }
 
-function addressValidation(){
+function addressValidation() {
     const form = document.forms["myForm"];
 
     const purok = form["purok"].value.trim();
@@ -200,142 +224,258 @@ function addressValidation(){
     const country = form["country"].value.trim();
     const zip = form["zip"].value.trim();
 
-    if (!purok || !barangay || !city || !province || !country || !zip) {
-        console.log("All address fields are required.");
+    // Error Fields
+
+    const purok_error = document.getElementById("purok-error")
+    const barangay_error = document.getElementById("barangay-error")
+    const city_error = document.getElementById("city-error")
+    const province_error = document.getElementById("province-error")
+    const country_error = document.getElementById("country-error")
+    const zip_error = document.getElementById("zip-error")
+
+    if(!purok || !barangay || !city || !province || !country || !zip) {
+        purok_error.textContent = "Purok field is required."
+        barangay_error.textContent = "Barangay field is required."
+        city_error.textContent = "City field is required."
+        province_error.textContent = "Province field is required."
+        country_error.textContent = "Country field is required."
+        zip_error.textContent = "Zip field is required."
         return false;
     }
 
-    // --------------------------Checking if hasDoubleSpaces---------------------------------------- //
-
-    if(hasDoubleSpace(purok)){
-        console.log("Purok field should not have 2 or more white spaces.")
+    // -------------------------- Check for double spaces -------------------------- //
+    if(hasDoubleSpace(purok)) {
+        purok_error.textContent = "Purok field should not contain multiple consecutive spaces."
         return false;
     }
 
-    if(hasDoubleSpace(barangay)){
-        console.log("Barangay field should not have 2 or more white spaces.")
+    if(hasDoubleSpace(barangay)) {
+        barangay_error.textContent = "Barangay field should not contain multiple consecutive spaces."
         return false;
     }
 
-    if(hasDoubleSpace(city)){
-        console.log("City field should not have 2 or more white spaces.")
+    if(hasDoubleSpace(city)) {
+        city_error.textContent = "City field should not contain multiple consecutive spaces."
         return false;
     }
 
-    if(hasDoubleSpace(province)){
-        console.log("Province field should not have 2 or more white spaces.")
+    if(hasDoubleSpace(province)) {
+        province_error.textContent = "Province field should not contain multiple consecutive spaces."
         return false;
     }
 
-    if(hasDoubleSpace(country)){
-        console.log("Country field should not have 2 or more white spaces.")
+    if(hasDoubleSpace(country)) {
+        country_error.textContent = "Country field should not contain multiple consecutive spaces."
         return false;
     }
 
-    if(hasDoubleSpace(zip)){
-        console.log("Zipcode field should not have 2 or more white spaces.")
+    if(hasDoubleSpace(zip)) {
+        zip_error.textContent = "Zip code should not contain multiple consecutive spaces."
         return false;
     }
 
-// -----------------------------------Checking the length------------------------------------------ //
-
-    if(!isMaxAndMinLengthValid(purok, 4, 20)){
-        console.log("Purok field must be at least 4 to 20 letters")
+    // -------------------------- Check length constraints -------------------------- //
+    if(!isMaxAndMinLengthValid(purok, 4, 20)) {
+        purok_error.textContent = "Purok must be between 4 and 20 characters."
         return false;
     }
 
-    if(!isMaxAndMinLengthValid(barangay, 4, 20)){
-        console.log("Barangay field must be at least 4 to 20 letters")
+    if(!isMaxAndMinLengthValid(barangay, 4, 20)) {
+        barangay_error.textContent = "Barangay must be between 4 and 20 characters."
         return false;
     }
 
-    if(!isMaxAndMinLengthValid(city, 4, 20)){
-        console.log("City field must be at least 4 to 20 letters")
+    if(!isMaxAndMinLengthValid(city, 4, 20)) {
+        city_error.textContent = "City must be between 4 and 20 characters."
         return false;
     }
 
-    if(!isMaxAndMinLengthValid(province, 4, 20)){
-        console.log("Province field must be at least 4 to 20 letters")
+    if(!isMaxAndMinLengthValid(province, 4, 20)) {
+        province_error.textContent = "Province must be between 4 and 20 characters."
         return false;
     }
 
-    if(!isMaxAndMinLengthValid(country, 4, 20)){
-        console.log("Country field must be at least 4 to 20 letters")
+    if(!isMaxAndMinLengthValid(country, 4, 20)) {
+        country_error.textContent = "Country must be between 4 and 20 characters."
         return false;
     }
 
-    if(!isMaxAndMinLengthValid(zip, 4, 6)){
-        console.log("Zipcode field must be at least 4 to 6 numbers")
+    if(!isMaxAndMinLengthValid(zip, 4, 6)) {
+        zip_error.textContent = "Zip code must be between 4 and 6 digits."
         return false;
     }
 
-// ----------------------------Checking for word Formating ------------------------------------ //
-    if (!isWordFormatValid(purok)) {
-        console.log("Purok is invalid format! Please follow this format example 'Purok Bayabas'. Only in the first letter of every word must be capital letter.");
+    // -------------------------- Check for consecutive characters -------------------------- //
+    if(hasConsecutiveChars(purok)) {
+        purok_error.textContent = "Purok should not contain three or more identical consecutive characters. Example: 'aaa' or 'PPP'"
         return false;
     }
 
-    if (!isWordFormatValid(barangay)) {
-        console.log("Barangay is invalid format! Please follow this format example 'Bayanihan'. Only in the first letter of every word must be capital letter.");
-        return false;
-    }
-    
-    if (!isWordFormatValid(city)) {
-        console.log("City is invalid format! Please follow this format example 'Cabadbarna City'. Only in the first letter of every word must be capital letter.");
+    if(hasConsecutiveChars(barangay)) {
+        barangay_error.textContent = "Barangay should not contain three or more identical consecutive characters. Example: 'aaa' or 'PPP'"
         return false;
     }
 
-
-    if (!isWordFormatValid(province)) {
-        console.log("Province is invalid format! Please follow this format example 'Agusan Del Norte'. Only in the first letter of every word must be capital letter.");
-        return false;
-    }
-    
-    if (!isWordFormatValid(country)) {
-        console.log("Country is invalid format! Please follow this format example 'Philippines'. Only in the first letter of every word must be capital letter.");
+    if(hasConsecutiveChars(city)) {
+        city_error.textContent = "City should not contain three or more identical consecutive characters. Example: 'aaa' or 'PPP'"
         return false;
     }
 
-    // Check the zipcode if has a letter then throw an error
+    if(hasConsecutiveChars(province)) {
+        province_error.textContent = "Province should not contain three or more identical consecutive characters. Example: 'aaa' or 'PPP'"
+        return false;
+    }
+
+    if(hasConsecutiveChars(country)) {
+        country_error.textContent = "Country should not contain three or more identical consecutive characters. Example: 'aaa' or 'PPP'"
+        return false;
+    }
+
+    // -------------------------- Word formatting validation -------------------------- //
+    const pattern = /^([A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)(\s[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)*$/;
+
+    // alert(pattern.test("Purok")); // true
+    // alert(pattern.test("Purok Bayabas")); // true
+    // alert(pattern.test("Purok-2A")); // true
+    // alert(pattern.test("Purok bayabas")); // false
+    // alert(pattern.test("purok Bayabas")); // false
+
+    if(!pattern.test(purok)) {
+        purok_error.textContent = "Each word must start with a capital letter and may contain lowercase letters, numbers, or a hyphen. Example: Purok-2A Bayabas."
+        return false;
+    }
+
+    if(!isWordFormatValid(barangay)) {
+        barangay_error.textContent = "Invalid format in Barangay. Example: 'Bayanihan'. Each word must start with a capital letter. No special characters allowed."
+        return false;
+    }
+
+    if(!isWordFormatValid(city)) {
+        city_error.textContent = "Invalid format in City. Example: 'Cabadbaran City'. Each word must start with a capital letter. No special characters allowed."
+        return false;
+    }
+
+    if(!isWordFormatValid(province)) {
+        province_error.textContent = "Invalid format in Province. Example: 'Agusan Del Norte'. Each word must start with a capital letter. No special characters allowed."
+        return false;
+    }
+
+    if(!isWordFormatValid(country)) {
+        country_error.textContent = "Invalid format in Country. Example: 'Philippines'. Each word must start with a capital letter. No special characters allowed."
+        return false;
+    }
+
+    // -------------------------- Zip code should contain digits only -------------------------- 
 
     if(hasLetter(zip)){
-        console.log("Zipcode should not have a letters. Please input a numbers only!");
+        zip_error.textContent = "Zip code should contain numbers only. Letters are not allowed."
+        return false;
+    }
+    
+
+    purok_error.textContent = ""
+    barangay_error.textContent = ""
+    city_error.textContent = ""
+    province_error.textContent = ""
+    country_error.textContent = ""
+    zip_error.textContent = ""
+    
+    return true;
+}
+
+function usernameValidation(){
+    const form = document.forms["myForm"];
+    const username = form["username"].value.trim();
+
+    const username_error = document.getElementById("username-error")
+
+    if(username_error === null) return console.log("Username error field is null")
+
+    if (!username) {
+        username_error.textContent = "Username is required."
         return false;
     }
 
-
-// -----------------------Checking if there are consecutive characters------------------------- //
-
-    if(hasConsecutiveChars(purok)){
-        console.log("Purok should not have 3 the same consecutive characters. Example: hhh or HHH");
+    if (!isMaxAndMinLengthValid(username, 4, 15)) {
+        username_error.textContent = "Username must be between 4 and 15 characters."
         return false;
     }
 
-    if(hasConsecutiveChars(barangay)){
-        console.log("Barangay should not have 3 the same consecutive characters. Example: hhh or HHH");
+    if (hasDoubleSpace(username)) {
+        username_error.textContent = "Username must not contain multiple consecutive spaces."
         return false;
     }
 
-    if(hasConsecutiveChars(city)){
-        console.log("City should not have 3 the same consecutive characters. Example: hhh or HHH");
+    if (hasConsecutiveChars(username)) {
+        username_error.textContent = "Username must not contain three identical consecutive characters. Example: 'aaa' or 'HHH'"
         return false;
     }
 
-    if(hasConsecutiveChars(province)){
-        console.log("Province should not have 3 the same consecutive characters. Example: hhh or HHH");
-        return false;
-    }
-
-    if(hasConsecutiveChars(country)){
-        console.log("Country should not have 3 the same consecutive characters. Example: hhh or HHH");
-        return false;
-    }
-
+    username_error.textContent = "";
 
     return true;
-
-
 }
+
+
+function passwordValidation(){
+    const form = document.forms["myForm"];
+    const password = form["password"].value.trim();
+    const reenteredPassword = form["reenterpassword"].value.trim();
+
+    const password_error = document.getElementById("password-error");
+    const reenteredPassword_error = document.getElementById("reenterpassword-error")
+
+    if(password_error === null || reenteredPassword_error === null) return console.log("Passwords Error fields are null")
+
+    if (!password || !reenteredPassword) {
+        password_error.textContent = "Both password fields are required.";
+        reenteredPassword_error.textContent = "Both password fields are required.";
+        return false;
+    }
+ 
+    if(!isPasswordMatch(password, reenteredPassword)){
+        password_error.textContent = "Passwords do not match."
+        reenteredPassword_error.textContent = "Passwords do not match."
+        return false;
+    }
+
+    const strength = checkPasswordStrength(password);
+    if(strength === "Invalid") {
+
+        password_error.textContent = `Password is ${strength}. Please enter at least 8 characters`
+        reenteredPassword_error.textContent = `Password is ${strength}. Please enter at least 8 characters`
+        return false;
+    }
+
+    password_error.textContent = ""
+    reenteredPassword_error.textContent = ""
+    
+
+    return true;
+}
+
+// -------------------- Password realtime checking---------------------------- //
+// function passwordStrengthValidation() {
+//     const form = document.forms["myForm"];
+//     const password = form["password"].value.trim();
+
+//     const checkedPassword = checkPasswordStrength(password);
+//     alert(checkedPassword); // You can replace this with UI feedback if needed
+
+//     return checkedPassword;
+// }
+
+// const passwordField = document.getElementById("password");
+
+// if (passwordField) {
+//     passwordField.addEventListener("keyup", passwordStrengthValidation);
+// } else {
+//     console.error("Password field not found.");
+// }
+
+
+
+// Form
 
 function validateRegForm(event) {
     event.preventDefault();
@@ -356,10 +496,69 @@ function validateRegForm(event) {
 
     if(!addressValidation()) return false;
 
+    if(!usernameValidation()) return false;
+
+    if(!passwordValidation()) return false;
+
+
+    // Finalization -> get all data from fields after validation
+
+    const form = document.forms['myForm'];
+
+    // Get input values
+    const idnumber = form["idnumber"].value.trim();
+    const firstname = form["firstname"].value.trim();
+    const lastname = form["lastname"].value.trim();
+    const middleinitial = form["middleinitial"].value.trim();
+    const extensionname = form["extensionname"].value.trim();
+    const email = form["email"].value.trim();
+    const sex = form["sex"].value;
+    const purok = form["purok"].value.trim();
+    const barangay = form["barangay"].value.trim();
+    const city = form["city"].value.trim();
+    const province = form["province"].value.trim();
+    const country = form["country"].value.trim();
+    const zip = form["zip"].value.trim();
+    const username = form["username"].value.trim();
+    const password = form["password"].value.trim();
+
+
+    const registrationData = {
+        idnumber,
+        firstname,
+        lastname,
+        email,
+        sex,
+        purok,
+        barangay,
+        city,
+        province,
+        country,
+        zip,
+        username,
+        password,
+        middleinitial,
+        extensionname
+    };
+
+    const handleRegistration = async () => {
+    console.log("Start")
+    console.table(registrationData)
+    const response = await services("POST", registrationData);
+
+        if (response.status === 'success') {
+            alert(`${response.message}`);
+        } else {
+            alert(response.message || `Registration Failed. Try Again!`);
+        }
+        
+    };
+
+    handleRegistration();
+
+
 
     
-
-    console.log("Form is valid");
     return true;
 }
 

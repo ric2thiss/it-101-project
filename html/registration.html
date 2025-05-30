@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account</title>
+  <link rel="stylesheet" href="../styles/registration.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo">MySite</div>
+    <nav>
+      <a href="../html/index.html">Home</a>
+      <a href="../html/login.html">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Create Account</h1>
+    <form name="myForm">
+      <div class="form-group">
+        <label for="idnumber">ID No:</label>
+        <input type="text" name="idnumber" id="idnumber" maxlength="10">
+        <div class="error-message" id="idnumber-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="firstname">First Name:</label>
+        <input type="text" name="firstname" id="firstname">
+        <div class="error-message" id="firstname-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="lastname">Last Name:</label>
+        <input type="text" name="lastname" id="lastname">
+        <div class="error-message" id="lastname-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="middleinitial">Middle Initial:</label>
+        <input type="text" name="middleinitial" id="middleinitial">
+        <div class="error-message" id="middleinitial-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="extensionname">Extension Name:</label>
+        <input type="text" name="extensionname" id="extensionname">
+        <div class="error-message" id="extensionname-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email">
+        <div class="error-message" id="email-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Sex:</label>
+        <div class="sex-options">
+          <input type="radio" name="sex" id="male" value="male"><label for="male">Male</label>
+          <input type="radio" name="sex" id="female" value="female"><label for="female">Female</label>
+        </div>
+        <div class="error-message" id="sex-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="purok">Purok:</label>
+        <input type="text" name="purok" id="purok">
+         <div class="error-message" id="purok-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="barangay">Barangay:</label>
+        <input type="text" name="barangay" id="barangay">
+        <div class="error-message" id="barangay-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="city">City:</label>
+        <input type="text" name="city" id="city">
+        <div class="error-message" id="city-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="province">Province:</label>
+        <input type="text" name="province" id="province">
+        <div class="error-message" id="province-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <input type="text" name="country" id="country">
+        <div class="error-message" id="country-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="zip">ZIP Code:</label>
+        <input type="number" name="zip" id="zip">
+        <div class="error-message" id="zip-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username">
+        <div class="error-message" id="username-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password">
+        <div class="error-message" id="password-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="reenterpassword">Re-enter Password:</label>
+        <input type="password" name="reenterpassword" id="reenterpassword">
+        <div class="error-message" id="reenterpassword-error"></div>
+      </div>
+
+      <div class="submit-btn">
+        <input type="submit" value="Create Account">
+        <p>Already have an account? <a href="../html/login.html">Click here</a></p>
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    &copy; 2025 MySite. All rights reserved.
+  </footer>
+
+  <script type="module" src="../script/signup.js"></script>
+</body>
+</html>

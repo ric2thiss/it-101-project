@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `realestateproject`
+-- Database: `mydatabase`
 --
 
 -- --------------------------------------------------------
@@ -32,12 +32,12 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users_credential`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `users_credential` (
+CREATE TABLE `users` (
   `Id` int(11) NOT NULL,
-  `idnumber` int(11) NOT NULL,
+  `id_Number` int(11) NOT NULL,
   `First_Name` varchar(50) NOT NULL,
   `Last_Name` varchar(50) NOT NULL,
   `Middle_Initial` varchar(2) NOT NULL,
@@ -60,9 +60,9 @@ CREATE TABLE `users_credential` (
 --
 
 --
--- Indexes for table `users_credential`
+-- Indexes for table `users`
 --
-ALTER TABLE `users_credential`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`Id`);
 
 --
@@ -70,9 +70,9 @@ ALTER TABLE `users_credential`
 --
 
 --
--- AUTO_INCREMENT for table `users_credential`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `users_credential`
+ALTER TABLE `users`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 COMMIT;
 

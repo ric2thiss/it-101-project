@@ -1,7 +1,7 @@
 <?php
-    function DbConnection() {
+    function db() {
         $host = 'localhost';
-        $dbname = 'realestateproject'; 
+        $dbname = 'mydatabase'; 
         $username = 'root';
         $password = ''; 
     

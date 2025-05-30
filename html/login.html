@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="../styles/login.css">
+</head>
+<body>
+  <header>
+    <div>MySite</div>
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="./registration.html">Create Account</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="login-container">
+      <h2>Login</h2>
+      <div class="error-message d-none" id="error-message">Error Message</div>
+      <form name="myForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="admin">
+        <label for="password">Password:</label><br />
+        <input type="password" id="password" name="password" value="password">
+        <div class="button-login">
+            <button type="submit">Login</button>
+        </div>
+      </form>
+      <p>Don't have an account? <a href="./registration.html">Sign up here</a></p>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 MySite. All rights reserved.
+  </footer>
+
+  <script type="module" src="../script/login.js"></script>
+</body>
+</html>
