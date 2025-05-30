@@ -60,37 +60,50 @@ function passwordValidation() {
     return true;
 }
 
-async function validateLoginWithServerConnection() {
-    const isUsernameValid = usernameValidation();
-    const isPasswordValid = passwordValidation();
-    let error_counts = 0;
-    const tempLogs = localStorage.setItem("counts", error_counts);
 
-    const form = document.forms["myForm"];
 
-    const username = form["username"].value.trim()
-    const password = form["password"].value.trim()
+let error_counts = localStorage.getItem("error-counts") || 0;
+const form = document.forms["myForm"];
 
-    if(isUsernameValid && isPasswordValid){
-        const request = await services("POST", {username, password})
 
-        if(request.status === "success"){
-            return error_counts+=1;
-        }
-    }
-    return isUsernameValid && isPasswordValid; 
+// async function validateLoginWithServerConnection() {
+//     const isUsernameValid = usernameValidation();
+//     const isPasswordValid = passwordValidation();
+
+//     if(isUsernameValid && isPasswordValid){
+//         const request = await services("POST", {username, password})
+
+//         if(request.status === "success"){
+//             return error_counts+=1;
+//         }
+//     }
+//     return isUsernameValid && isPasswordValid; 
+// }
+
+async function login(username, password) {
+    const request = await services("POST", { username, password }, "login");
+    return request;
 }
 
-function validateLoginForm(event) {
+async function validateLoginForm(event) {
     event.preventDefault();
 
-    const validated = validateLoginWithServerConnection();
+    const form = document.forms["myForm"]; // ✅ Define form first
+    const username = form["username"].value.trim();
+    const password = form["password"].value.trim();
 
-    if(!validated) return false;
+    const isUsernameValid = usernameValidation();
+    const isPasswordValid = passwordValidation();
 
+    if (isUsernameValid && isPasswordValid) {
+        const response = await login(username, password);
+        console.log(response);
+    } else {
+        console.log("Validation ERROR");
+    }
 
-    console.log("Form is valid. Proceeding to the link..");
-    // form.submit(); ← you can manually submit the form if needed
+    return true;
 }
 
 document.querySelector("form").addEventListener("submit", validateLoginForm);
+

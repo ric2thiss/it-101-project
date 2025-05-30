@@ -131,13 +131,80 @@ const insert = async (data) => {
     }
 };
 
-// Controller layer or function to handle request
-export const services = async (method, data) => {
+
+
+// Login function
+const login = async (data) => {
+    const URL = `http://localhost/paquibot/server/login.php`;
+
+    try {
+        const response = await fetch(URL, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            // Attach server message if available
+            throw new Error(result.message || `HTTP error status: ${response.status}`);
+        }
+
+        return {
+            status: "success",
+            data: result
+        };
+
+    } catch (error) {
+        console.error('Login Error:', error.message);
+
+        return {
+            status: "error",
+            message: error.message
+        };
+    }
+};
+
+// Services controller
+export const services = async (method, data, action) => {
     const request = method.trim().toUpperCase();
 
-    if (request === "POST") {
-         return await insert(data);
+    if (request === "POST" && action === "register") {
+        return await insert(data); // Make sure `insert()` is defined somewhere
     }
-    
+
+    if (request === "POST" && action === "login") {
+        return await login(data);
+    }
+
+    return {
+        status: "error",
+        message: "Invalid method or action"
+    };
 };
+
+// Tracking service
+
+// let count = 0;
+
+// export const error_tracking = () => {
+//     const temp = localStorage.getItem("error-count");
+
+//     if(temp === null || temp === false){
+//         return false;
+//     }
+
+//     count = Number(temp) + count
+
+//     if(count === 3){
+//         console.log("You are locked. Please wait for 15 secs.")
+//     }else if(count === 6){
+//         console.log("you are locked for 30 seconds")
+//     }else{
+//         console.log("You are locked for 60 seconds");
+//     }
+// }
 

@@ -544,7 +544,7 @@ function validateRegForm(event) {
     const handleRegistration = async () => {
     console.log("Start")
     console.table(registrationData)
-    const response = await services("POST", registrationData);
+    const response = await services("POST", registrationData, "register");
 
         if (response.status === 'success') {
             alert(`${response.message}`);
