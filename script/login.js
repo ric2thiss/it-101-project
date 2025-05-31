@@ -5,193 +5,157 @@ import {
     services
 } from './global.js';
 
-// ========== USERNAME VALIDATION ==========
-function usernameValidation() {
-    const form = document.forms["myForm"];
-    const username = form["username"].value.trim();
-    const error_message = document.getElementById("error-message");
+// ==== DOM ELEMENTS ====
+const error_message = document.getElementById("error-message");
+const login_button = document.getElementById("button-login");
+const timerElement = document.getElementById("timer");
 
-    if (!error_message) {
-        console.log("error_message field is null");
-        return false;
-    }
+// ==== HELPER FUNCTIONS ====
+function showError(message) {
+    if (!error_message) return;
+    error_message.classList.remove("d-none");
+    error_message.textContent = message;
+}
 
-    if (!username) {
-        error_message.classList.remove("d-none");
-        error_message.textContent = "Username is required.";
-        return false;
-    }
-
-    if (!isMaxAndMinLengthValid(username, 4, 15)) {
-        error_message.classList.remove("d-none");
-        error_message.textContent = "Username must be between 4 and 15 characters.";
-        return false;
-    }
-
-    if (hasDoubleSpace(username)) {
-        error_message.classList.remove("d-none");
-        error_message.textContent = "Username must not contain multiple consecutive spaces.";
-        return false;
-    }
-
-    if (hasConsecutiveChars(username)) {
-        error_message.classList.remove("d-none");
-        error_message.textContent = "Username must not contain three identical consecutive characters. Example: 'aaa' or 'HHH'";
-        return false;
-    }
-
-    // If valid, hide the error message
+function hideError() {
+    if (!error_message) return;
     error_message.classList.add("d-none");
     error_message.textContent = "";
-    return true;
 }
 
-// ========== PASSWORD VALIDATION ==========
-function passwordValidation() {
-    const form = document.forms["myForm"];
-    const password = form["password"].value.trim();
-    const error_message = document.getElementById("error-message");
-
-    if (!password) {
-        error_message.classList.remove("d-none");
-        error_message.textContent = "Password is required.";
-        return false;
+function disableLogin() {
+    if (login_button) {
+        login_button.disabled = true;
+        login_button.style.backgroundColor = "lightgray";
+        login_button.style.cursor = "not-allowed";
     }
-
-    error_message.classList.add("d-none");
-    error_message.textContent = "";
-    return true;
 }
 
-// ========== ERROR COUNT FROM LOCAL STORAGE ==========
-let error_counts = 0;
-try {
-    const storedErrorCounts = JSON.parse(localStorage.getItem("error-counts"));
-    error_counts = Number(storedErrorCounts) || 0;
-} catch (e) {
-    console.error("Error parsing error-counts from localStorage:", e);
-    error_counts = 0;
+function enableLogin() {
+    if (login_button) {
+        login_button.disabled = false;
+        login_button.style.backgroundColor = ""; // reset to original
+        login_button.style.cursor = "";
+    }
 }
 
-// ========== TIMER START FUNCTION ==========
-function timerStart(countdownTime) {
-    const timerElement = document.getElementById("timer");
-    const endTime = Date.now() + countdownTime * 1000;
-    localStorage.setItem("lockoutEndTime", endTime);
-
-    // Prevent back and forward navigation
+function disableHistoryNavigation() {
     // history.pushState(null, null, location.href);
     // window.onpopstate = () => history.go(0);
+    history.pushState(null, null, location.href);
+    window.onpopstate = () => {
+        history.pushState(null, null, location.href);
+    };
+}
 
-    // Prevent refresh or tab close
-    // window.addEventListener("onload", function (e) {
-    //     window.onpopstate = () => history.go(1);
-    // });
+function enableHistoryNavigation() {
+    window.onpopstate = null;
+}
 
-    // Format mm:ss
-    function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-    }
+// ==== TIMER ====
+function timerStart(seconds) {
+    const endTime = Date.now() + seconds * 1000;
+    localStorage.setItem("lockoutEndTime", endTime);
+    showError("Too many failed attempts. Please wait...");
 
-    // Update timer
+    disableLogin();
+    disableHistoryNavigation();
+
     const interval = setInterval(() => {
-        const remainingTime = Math.floor((endTime - Date.now()) / 1000);
+        const remaining = Math.floor((endTime - Date.now()) / 1000);
 
-        if (remainingTime <= 0) {
+        if (remaining <= 0) {
             clearInterval(interval);
             timerElement.textContent = "";
             localStorage.removeItem("lockoutEndTime");
-            window.onpopstate = null;
+            hideError();
+            enableLogin();
+            enableHistoryNavigation();
         } else {
-            timerElement.textContent = formatTime(remainingTime);
+            const minutes = String(Math.floor(remaining / 60)).padStart(2, '0');
+            const seconds = String(remaining % 60).padStart(2, '0');
+            timerElement.textContent = `${minutes}:${seconds}`;
         }
     }, 1000);
 }
 
-// ========== RESTORE TIMER ON PAGE LOAD ==========
+// ==== RESTORE TIMER ON PAGE LOAD ====
 window.addEventListener("DOMContentLoaded", () => {
     const storedEndTime = localStorage.getItem("lockoutEndTime");
-
     if (storedEndTime) {
         const remainingTime = Math.floor((Number(storedEndTime) - Date.now()) / 1000);
-        history.pushState(null, null, location.href);
-        window.onpopstate = () => history.go(0);
         if (remainingTime > 0) {
             timerStart(remainingTime);
-            history.pushState(null, null, location.href);
-            window.onpopstate = () => history.go(0);
         } else {
             localStorage.removeItem("lockoutEndTime");
         }
     }
 });
 
-// ========== LOGIN FUNCTION ==========
+// ==== VALIDATION ====
+function usernameValidation() {
+    const username = document.forms["myForm"]["username"].value.trim();
+
+    if (!username) return showError("Username is required."), false;
+    if (!isMaxAndMinLengthValid(username, 4, 15)) return showError("Username must be between 4 and 15 characters."), false;
+    if (hasDoubleSpace(username)) return showError("Username must not contain double spaces."), false;
+    if (hasConsecutiveChars(username)) return showError("Username must not contain three identical consecutive characters."), false;
+
+    return true;
+}
+
+function passwordValidation() {
+    const password = document.forms["myForm"]["password"].value.trim();
+    if (!password) return showError("Password is required."), false;
+    return true;
+}
+
+// ==== ERROR COUNT HANDLING ====
+let error_counts = Number(localStorage.getItem("error-counts")) || 0;
+
 async function login(username, password) {
     const request = await services("POST", { username, password }, "login");
-    const error_message = document.getElementById("error-message");
 
     if (request.data.message === "The password is wrong.") {
-        error_message.classList.remove("d-none");
-        error_message.textContent = request.data.message;
+        showError(request.data.message);
 
-        if (error_counts > 9) error_counts = 0;
-        error_counts += 1;
+        error_counts = (error_counts + 1) % 10;
+        localStorage.setItem("error-counts", error_counts);
 
-        localStorage.setItem("error-counts", JSON.stringify(error_counts));
-        error_counts = Number(JSON.parse(localStorage.getItem("error-counts")));
+        if (error_counts === 3) timerStart(15);
+        else if (error_counts === 6) timerStart(30);
+        else if (error_counts === 9) timerStart(60);
 
         return;
     }
 
-    const errorMessages = [
-        "Username is not registered.",
-        "Username and password are required."
-    ];
-
-    if (errorMessages.includes(request.data.message)) {
-        error_message.classList.remove("d-none");
-        error_message.textContent = request.data.message;
+    if (["Username is not registered.", "Username and password are required."].includes(request.data.message)) {
+        showError(request.data.message);
         return;
     }
 
     return request;
 }
 
-// ========== VALIDATE LOGIN FORM ON SUBMIT ==========
+// ==== FORM SUBMIT ====
 async function validateLoginForm(event) {
     event.preventDefault();
 
-    const form = document.forms["myForm"];
-    const username = form["username"].value.trim();
-    const password = form["password"].value.trim();
+    if (!usernameValidation() || !passwordValidation()) return;
 
-    const isUsernameValid = usernameValidation();
-    const isPasswordValid = passwordValidation();
+    const username = document.forms["myForm"]["username"].value.trim();
+    const password = document.forms["myForm"]["password"].value.trim();
 
-    if (isUsernameValid && isPasswordValid) {
-        const response = await login(username, password);
+    const response = await login(username, password);
 
-        if (error_counts === 3) {
-            timerStart(15);
-        } else if (error_counts === 6) {
-            timerStart(30);
-        } else if (error_counts === 9) {
-            timerStart(60);
-        }
-
-        if (response && response.data.message === "Login successful!") {
-            localStorage.setItem("account", JSON.stringify(response.data.user));
-            console.log(response.data.message);
-        }
-    } else {
-        console.log("Validation ERROR");
+    if (response && response.data.message === "Login successful!") {
+        localStorage.setItem("account", JSON.stringify(response.data.user));
+        localStorage.setItem("error-counts", "0");
+        hideError();
+        console.log(response.data);
+        localStorage.setItem("userloggedIn", JSON.stringify(response.data));
+        window.location.href = 'index.html';
     }
-
-    return true;
 }
 
-// ========== ATTACH EVENT LISTENER ==========
 document.querySelector("form").addEventListener("submit", validateLoginForm);
