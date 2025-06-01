@@ -214,6 +214,70 @@ function sexValidation(){
       return true;
 }
 
+
+const birthDateInput = document.getElementById("birthDate");
+
+birthDateInput.addEventListener("change", (e) => {
+  birthDateValidation(e.target.value);
+});
+
+function birthDateValidation(value = document.getElementById("birthDate").value) {
+  if (!value) {
+    document.getElementById("birthDate-error").textContent = "Please enter a valid birthdate.";
+    document.getElementById("birthDateData").value = "";
+    return false;
+  }
+
+  const birthDate = new Date(value);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  // Show age in the input box
+  document.getElementById("birthDateData").value = age;
+
+  // Show error if under 18
+  if (age < 18) {
+    document.getElementById("birthDate-error").textContent = "You must be 18 years or older to register.";
+    return false;
+  }
+
+  // Clear error if age is valid
+  document.getElementById("birthDate-error").textContent = "";
+  return true;
+}
+
+
+
+function birthValidation(){
+    const birthDate = new Date(document.getElementById("birthDate").value);
+    const today = new Date();
+    
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+
+    if(!age){
+        document.getElementById("birthDate-error").textContent = "Birthdate is required.";
+        return false;
+    }
+
+    if (age < 18){
+        return false;
+    }
+
+    return true;
+}
+
+
 function addressValidation() {
     const form = document.forms["myForm"];
 
@@ -454,24 +518,40 @@ function passwordValidation(){
     return true;
 }
 
-// -------------------- Password realtime checking---------------------------- //
-// function passwordStrengthValidation() {
-//     const form = document.forms["myForm"];
-//     const password = form["password"].value.trim();
+// -------------------- Password realtime checking ---------------------------- //
+function passwordStrengthValidation() {
+    const form = document.forms["myForm"];
+    const password = form["password"].value.trim();
+    const reenteredpassword = form["reenterpassword"].value.trim();
 
-//     const checkedPassword = checkPasswordStrength(password);
-//     alert(checkedPassword); // You can replace this with UI feedback if needed
+    const checkedPassword = checkPasswordStrength(password);
 
-//     return checkedPassword;
-// }
+    const password_strength_checker = document.getElementById("password-strength-checker");
+    if (password_strength_checker) {
+        password_strength_checker.textContent = checkedPassword;
+    }
 
-// const passwordField = document.getElementById("password");
+    const password_match_checker = document.getElementById("password-checker-matched");
+    if (password_match_checker) {
+        if (password === reenteredpassword && password !== "") {
+            password_match_checker.textContent = "Password Matched";
+        } else {
+            password_match_checker.textContent = "";
+        }
+    }
+}
 
-// if (passwordField) {
-//     passwordField.addEventListener("keyup", passwordStrengthValidation);
-// } else {
-//     console.error("Password field not found.");
-// }
+const passwordField = document.getElementById("password");
+const reenterPasswordField = document.getElementById("reenterpassword");
+
+if (passwordField) {
+    passwordField.addEventListener("keyup", passwordStrengthValidation);
+}
+
+if (reenterPasswordField) {
+    reenterPasswordField.addEventListener("keyup", passwordStrengthValidation);
+}
+
 
 
 
@@ -494,6 +574,8 @@ function validateRegForm(event) {
 
     if(!sexValidation()) return false;
 
+    if(!birthValidation()) return false;
+
     if(!addressValidation()) return false;
 
     if(!usernameValidation()) return false;
@@ -513,6 +595,7 @@ function validateRegForm(event) {
     const extensionname = form["extensionname"].value.trim();
     const email = form["email"].value.trim();
     const sex = form["sex"].value;
+    const age = form["age"].value;
     const purok = form["purok"].value.trim();
     const barangay = form["barangay"].value.trim();
     const city = form["city"].value.trim();
@@ -529,6 +612,7 @@ function validateRegForm(event) {
         lastname,
         email,
         sex,
+        age,
         purok,
         barangay,
         city,
@@ -548,6 +632,7 @@ function validateRegForm(event) {
 
         if (response.status === 'success') {
             alert(`${response.message}`);
+            window.location.href = "login.html"
         } else {
             alert(response.message || `Registration Failed. Try Again!`);
         }

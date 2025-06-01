@@ -84,11 +84,11 @@ export function checkPasswordStrength(password) {
     const hasSpecialChar = /[!@#$%^&*()_+{}\[\]:;"'<>,.?/~`]/.test(password);
 
     if (length >= 8 && hasLetter && hasDigit && hasSpecialChar) {
-        return "Strong";
+        return "Strong password";
     } else if (length >= 8 && hasLetter && hasDigit) {
-        return "Medium";
+        return "Medium password";
     } else if (length >= 8 && hasLetter) {
-        return "Weak";
+        return "Weak password";
     } else {
         return "Invalid";
     }
@@ -174,7 +174,7 @@ export const services = async (method, data, action) => {
     const request = method.trim().toUpperCase();
 
     if (request === "POST" && action === "register") {
-        return await insert(data); // Make sure `insert()` is defined somewhere
+        return await insert(data); 
     }
 
     if (request === "POST" && action === "login") {
@@ -186,26 +186,4 @@ export const services = async (method, data, action) => {
         message: "Invalid method or action"
     };
 };
-
-// Tracking service
-
-// let count = 0;
-
-// export const error_tracking = () => {
-//     const temp = localStorage.getItem("error-count");
-
-//     if(temp === null || temp === false){
-//         return false;
-//     }
-
-//     count = Number(temp) + count
-
-//     if(count === 3){
-//         console.log("You are locked. Please wait for 15 secs.")
-//     }else if(count === 6){
-//         console.log("you are locked for 30 seconds")
-//     }else{
-//         console.log("You are locked for 60 seconds");
-//     }
-// }
 

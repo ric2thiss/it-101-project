@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $extensionname = trim($data["extensionname"] ?? '');
     $email = trim($data["email"] ?? '');
     $sex = trim($data["sex"] ?? '');
+    $age = trim($data["age"] ?? '');
     $purok = trim($data["purok"] ?? '');
     $barangay = trim($data["barangay"] ?? '');
     $city = trim($data["city"] ?? '');
@@ -58,18 +59,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Insert data into the database
-    if (insertData($idnumber, $firstname, $lastname, $middleinitial, $extensionname, $email, $sex, $purok, $barangay, $city, $province, $country, $zip, $username, $hashedPassword)) {
+    if (insertData($idnumber, $firstname, $lastname, $middleinitial, $extensionname, $email, $sex, $age, $purok, $barangay, $city, $province, $country, $zip, $username, $hashedPassword)) {
         echo json_encode(["status"=> "success", "message"=>"Registration successful!"]);
     } else {
         echo json_encode(["status" => "error", "message" => "An error occurred. Please try again."]);
     }
 }
 
-function insertData($idnumber, $firstname, $lastname, $middleinitial, $extensionname, $email, $sex, $purok, $barangay, $city, $province, $country, $zip, $username, $password) {
+function insertData($idnumber, $firstname, $lastname, $middleinitial, $extensionname, $email, $sex, $age, $purok, $barangay, $city, $province, $country, $zip, $username, $password) {
     try {
         $conn = db(); // Get the database connection
-        $sql = "INSERT INTO users (id_Number, First_Name, Last_Name, Middle_Initial, Extension_Name, Email, Sex, Purok, Barangay, City, Province, Country, Zip_Code, Username, Password)
-                VALUES (:idnumber, :firstname, :lastname, :middleinitial, :extensionname, :email, :sex, :purok, :barangay, :city, :province, :country, :zip, :username, :password)";
+        $sql = "INSERT INTO users (id_Number, First_Name, Last_Name, Middle_Initial, Extension_Name, Email, Sex, Age, Purok, Barangay, City, Province, Country, Zip_Code, Username, Password)
+                VALUES (:idnumber, :firstname, :lastname, :middleinitial, :extensionname, :email, :sex, :age, :purok, :barangay, :city, :province, :country, :zip, :username, :password)";
 
         $stmt = $conn->prepare($sql);
 
@@ -81,6 +82,7 @@ function insertData($idnumber, $firstname, $lastname, $middleinitial, $extension
         $stmt->bindParam(':extensionname', $extensionname);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':sex', $sex);
+        $stmt->bindParam(':age', $age);
         $stmt->bindParam(':purok', $purok);
         $stmt->bindParam(':barangay', $barangay);
         $stmt->bindParam(':city', $city);

@@ -1,0 +1,18 @@
+<Files "404.png">
+    Require all denied
+    <If "%{HTTP_REFERER} =~ m#^http://localhost/paquibot/#">
+        Require all granted
+    </If>
+</Files>
+
+<Files "img3.svg">
+    Require all denied
+    <If "%{HTTP_REFERER} =~ m#^http://localhost/paquibot/#">
+        Require all granted
+    </If>
+</Files>
+
+
+#Redirect 403 error to 404.html
+
+ErrorDocument 403 http://localhost/paquibot/html/404.html

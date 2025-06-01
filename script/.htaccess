@@ -1,0 +1,31 @@
+<Files "global.js">
+    Require all denied
+    <If "%{HTTP_REFERER} =~ m#^http://localhost/paquibot/#">
+        Require all granted
+    </If>
+</Files>
+
+<Files "index.js">
+    Require all denied
+    <If "%{HTTP_REFERER} =~ m#^http://localhost/paquibot/#">
+        Require all granted
+    </If>
+</Files>
+
+<Files "login.js">
+    Require all denied
+    <If "%{HTTP_REFERER} =~ m#^http://localhost/paquibot/#">
+        Require all granted
+    </If>
+</Files>
+
+<Files "signup.js">
+    Require all denied
+    <If "%{HTTP_REFERER} =~ m#^http://localhost/paquibot/#">
+        Require all granted
+    </If>
+</Files>
+
+#Redirect 403 error to 404.html
+
+ErrorDocument 403 http://localhost/paquibot/html/404.html

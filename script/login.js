@@ -112,6 +112,13 @@ function passwordValidation() {
 
 // ==== ERROR COUNT HANDLING ====
 let error_counts = Number(localStorage.getItem("error-counts")) || 0;
+const forgetPassword = document.getElementById("forget-password");
+console.log(forgetPassword)
+
+if(error_counts > 1){
+    forgetPassword.classList.remove("d-none");
+    forgetPassword.style.display = "block";
+}
 
 async function login(username, password) {
     const request = await services("POST", { username, password }, "login");
@@ -122,9 +129,18 @@ async function login(username, password) {
         error_counts = (error_counts + 1) % 10;
         localStorage.setItem("error-counts", error_counts);
 
-        if (error_counts === 3) timerStart(15);
-        else if (error_counts === 6) timerStart(30);
-        else if (error_counts === 9) timerStart(60);
+       if (error_counts === 2) {
+            forgetPassword.classList.remove("d-none");
+            forgetPassword.style.display = "block";
+        } else if (error_counts === 3) {
+            timerStart(17);
+        } else if (error_counts === 6) {
+            timerStart(32);
+        } else if (error_counts === 9) {
+            timerStart(62);
+        }
+
+
 
         return;
     }

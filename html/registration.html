@@ -15,10 +15,14 @@
       <a href="../html/login.html">Login</a>
     </nav>
   </header>
-
+    <br><br>
   <main>
     <h1>Create Account</h1>
+    <hr>
     <form name="myForm">
+
+      <h2 class="full-width">Personal Information</h2>
+
       <div class="form-group">
         <label for="idnumber">ID No:</label>
         <input type="text" name="idnumber" id="idnumber" maxlength="10">
@@ -65,6 +69,19 @@
       </div>
 
       <div class="form-group">
+        <label for="birthDate">Birth Date:</label>
+        <input type="date" name="birthDate" id="birthDate">
+        
+        <!-- This will show the calculated age -->
+        <input type="text" id="birthDateData" name="age" readonly placeholder="Your age will appear here">
+
+        <!-- Error message will appear here if needed -->
+        <div class="error-message" id="birthDate-error" style="color: red;"></div>
+      </div>
+
+      <h2 class="full-width">Address Information</h2>
+
+      <div class="form-group">
         <label for="purok">Purok:</label>
         <input type="text" name="purok" id="purok">
          <div class="error-message" id="purok-error"></div>
@@ -100,22 +117,30 @@
         <div class="error-message" id="zip-error"></div>
       </div>
 
+      <h2 class="full-width">Account Information</h2>
+
       <div class="form-group">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username">
         <div class="error-message" id="username-error"></div>
       </div>
 
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password">
+      <div class="form-group password">
+        <label for="password">Password: <span id="password-strength-checker"></span></label>
+        <div class="input-holder">
+          <input type="password" name="password" id="password">
+          <span>
+            <input type="checkbox" id="show-password" class="checkbox">
+            <label for="show-password">Show password</label>
+          </span>
+        </div>
         <div class="error-message" id="password-error"></div>
       </div>
 
       <div class="form-group">
-        <label for="reenterpassword">Re-enter Password:</label>
-        <input type="password" name="reenterpassword" id="reenterpassword">
-        <div class="error-message" id="reenterpassword-error"></div>
+        <label for="reenterpassword">Re-enter Password: <span id="password-checker-matched"></span></label>
+          <input type="password" name="reenterpassword" id="reenterpassword">
+          <div class="error-message" id="reenterpassword-error"></div>
       </div>
 
       <div class="submit-btn">
@@ -130,5 +155,19 @@
   </footer>
 
   <script type="module" src="../script/signup.js"></script>
+  <script>
+    const show_password = document.getElementById("show-password");
+
+    show_password.addEventListener("click", () => {
+      if (show_password.checked) {
+        document.getElementById("password").type = "text";
+        document.getElementById("reenterpassword").type = "text";
+      } else {
+        document.getElementById("password").type = "password";
+        document.getElementById("reenterpassword").type = "password";
+      }
+    });
+
+  </script>
 </body>
 </html>

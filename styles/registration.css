@@ -101,12 +101,21 @@ input[type="submit"]:hover {
     margin-top: 5px;
 }
 
+.d-none{
+    display: none;
+}
+
 footer {
     background-color: #171717;
     color: white;
     text-align: center;
     padding: 1rem;
     margin-top: 3rem;
+}
+
+
+.full-width {
+  grid-column: span 3;
 }
 
 @media screen and (max-width: 768px) {
