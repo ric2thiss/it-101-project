@@ -62,6 +62,11 @@ function firstNameValidation(){
         return false;
     }
 
+    if(hasDigit(firstname)){
+        firstname_error.textContent = "The first name field must not contain numbers"
+        return false;
+    }
+
     if(!isFirstLetterCapital(firstname)){
         firstname_error.textContent = "The first letter of every word in the first name must be capitalized. Example: Juan Karlos."
         return false;
@@ -99,7 +104,12 @@ function lastNameValidation(){
     }
 
     if(hasDoubleSpace(lastname)){
-        alastname_error.textContent = "The last name field must not contain two or more consecutive spaces."
+        lastname_error.textContent = "The last name field must not contain two or more consecutive spaces."
+        return false;
+    }
+
+    if(hasDigit(lastname)){
+        lastname_error.textContent = "The last name field must not contain numbers"
         return false;
     }
 
@@ -129,6 +139,10 @@ function middleNameValidation(){
 
     if(middleinitial_error === null) return console.log("Middle initial error field is null");
 
+    if(hasDigit(middleInitial)){
+        firstname_error.textContent = "The Middle Initial must not contain numbers"
+        return false;
+    }
     if(!isMaxAndMinLengthValid(middleInitial, 0, 1)){
         middleinitial_error.textContent = "Middle Initial must only 1-2 characters."
         return false;
