@@ -1,3 +1,10 @@
+# Assuming nga naa kay folder nga PHP
+# Sulod sa imung php nga folder create ka ug file ang name is dapat ".htaccess"
+# After ana e paste ni nga code
+# Alisdi ra ang paquibpt
+# Kung maka bantay ka sa Files naay filename nga .php
+# Mao nay name sa file nga gusto nimu e hide 
+
 <Files "login.php">
     Require all denied
     <If "%{HTTP_REFERER} =~ m#^http://localhost/paquibot/#">

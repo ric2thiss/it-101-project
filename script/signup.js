@@ -311,14 +311,51 @@ function addressValidation() {
     const country_error = document.getElementById("country-error")
     const zip_error = document.getElementById("zip-error")
 
-    if(!purok || !barangay || !city || !province || !country || !zip) {
+    // if(!purok || !barangay || !city || !province || !country || !zip) {
+    //     purok_error.textContent = "Purok field is required."
+    //     barangay_error.textContent = "Barangay field is required."
+    //     city_error.textContent = "City field is required."
+    //     province_error.textContent = "Province field is required."
+    //     country_error.textContent = "Country field is required."
+    //     zip_error.textContent = "Zip field is required."
+    //     return false;
+    // }
+
+    if(!purok){
         purok_error.textContent = "Purok field is required."
+        return false;
+    }else{
+         purok_error.textContent = ""
+    }
+    if(!barangay){
         barangay_error.textContent = "Barangay field is required."
+        return false;
+    }else{
+        barangay_error.textContent = ""
+    }
+    if(!city){
         city_error.textContent = "City field is required."
+        return false;
+    }else{
+        province_error.textContent = ""
+    }
+    if(!province){
         province_error.textContent = "Province field is required."
+        return false;
+    }else{
+        country_error.textContent = ""
+    }
+    if(!country){
         country_error.textContent = "Country field is required."
+        return false;
+    }else{
+        country_error.textContent = ""
+    }
+    if(!zip){
         zip_error.textContent = "Zip field is required."
         return false;
+    }else{
+        zip_error.textContent = ""
     }
 
     // -------------------------- Check for double spaces -------------------------- //
@@ -410,18 +447,26 @@ function addressValidation() {
     }
 
     // -------------------------- Word formatting validation -------------------------- //
-    const pattern = /^([A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)(\s[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)*$/;
+    // const pattern = /^([A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)(\s[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)*$/;
+    // const pattern = /^((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z]))(\s((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z])))*$/;
+    const pattern = /^((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z]))(?:\s((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z])))*$/;
 
-    // alert(pattern.test("Purok")); // true
-    // alert(pattern.test("Purok Bayabas")); // true
-    // alert(pattern.test("Purok-2A")); // true
-    // alert(pattern.test("Purok bayabas")); // false
-    // alert(pattern.test("purok Bayabas")); // false
+    // Sample tests:
+    // console.log(pattern.test("Purok"));           // true
+    // console.log(pattern.test("Purok Bayabas"));   // true
+    // console.log(pattern.test("Purok-2A"));        // true
+    // console.log(pattern.test("Purok bayabas"));   // false
+    // console.log(pattern.test("purok Bayabas"));   // false
+    // console.log(pattern.test("1-A"));             // true
+    // console.log(pattern.test("1-a"));             // true
+    // console.log(pattern.test("1-"));              // false
+    // console.log(pattern.test("asdasdasdasd"));    // false
 
-    if(!pattern.test(purok)) {
-        purok_error.textContent = "Each word must start with a capital letter and may contain lowercase letters, numbers, or a hyphen. Example: Purok-2A Bayabas."
+    if (!pattern.test(purok)) {
+        purok_error.textContent = "Each word must start with a capital letter or follow the number-letter format like '1-A'. Example: 'Purok Bayabas' or '1-a'.";
         return false;
     }
+
 
     if(!isWordFormatValid(barangay)) {
         barangay_error.textContent = "Invalid format in Barangay. Example: 'Bayanihan'. Each word must start with a capital letter. No special characters allowed."
