@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Account</title>
   <link rel="stylesheet" href="../styles/registration.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -82,7 +83,11 @@
       <h2 class="full-width">Address Information</h2>
 
       <div class="form-group">
-        <label for="purok">Purok:</label>
+        <label for="purok" style="display: flex; align-items: self-end;">Purok: 
+          <span class="tooltip"> <i class="fa-solid fa-circle-info"></i>
+            <span class="tooltiptext"> Please enter a valid value. Allowed formats: a number (e.g., '1'), a number followed by a capital letter (e.g., '1A'), 'Purok', or 'Purok' followed by a dash and a number (e.g., 'Purok-1')</span>
+          </span>
+        </label>
         <input type="text" name="purok" id="purok">
          <div class="error-message" id="purok-error"></div>
       </div>

@@ -9,6 +9,33 @@ import {
 } from './global.js';
 
 
+// Save to localStorage whenever input changes
+document.addEventListener("input", (e) => {
+  if (e.target.tagName === "INPUT") {
+    const name = e.target.name;
+    const value = e.target.value;
+    if (name) {
+      localStorage.setItem(name, value);
+    }
+  }
+});
+
+// Restore saved data on page load
+window.addEventListener("DOMContentLoaded", () => {
+  const inputs = document.querySelectorAll("input");
+  inputs.forEach((input) => {
+    const name = input.name;
+    if (name) {
+      const savedValue = localStorage.getItem(name);
+      if (savedValue) {
+        input.value = savedValue;
+      }
+    }
+  });
+});
+
+
+
 function IDNumberValidation(){
     const idNumberInput = document.getElementById("idnumber").value;
     const idnumber_error = document.getElementById("idnumber-error");
@@ -390,7 +417,7 @@ function addressValidation() {
     }
 
     // -------------------------- Check length constraints -------------------------- //
-    if(!isMaxAndMinLengthValid(purok, 4, 20)) {
+    if(!isMaxAndMinLengthValid(purok, 1, 20)) {
         purok_error.textContent = "Purok must be between 4 and 20 characters."
         return false;
     }
@@ -449,7 +476,9 @@ function addressValidation() {
     // -------------------------- Word formatting validation -------------------------- //
     // const pattern = /^([A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)(\s[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)*$/;
     // const pattern = /^((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z]))(\s((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z])))*$/;
-    const pattern = /^((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z]))(?:\s((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z])))*$/;
+    // const pattern = /^((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z]))(?:\s((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z])))*$/;
+    // const pattern = /^(Purok(?:-[0-9A-Z]+| [A-Z][a-z]+)?|[0-9]+(?:-[A-Z])?|[A-Z])$/;
+    const pattern = /^(Purok(-\d+)?|[0-9]+[A-Z]?)$/
 
     // Sample tests:
     // console.log(pattern.test("Purok"));           // true
@@ -459,32 +488,33 @@ function addressValidation() {
     // console.log(pattern.test("purok Bayabas"));   // false
     // console.log(pattern.test("1-A"));             // true
     // console.log(pattern.test("1-a"));             // true
+    // console.log(pattern.test("1"));             // true
     // console.log(pattern.test("1-"));              // false
     // console.log(pattern.test("asdasdasdasd"));    // false
 
     if (!pattern.test(purok)) {
-        purok_error.textContent = "Each word must start with a capital letter or follow the number-letter format like '1-A'. Example: 'Purok Bayabas' or '1-a'.";
+        purok_error.textContent = "Please enter a valid value. Allowed formats: a number (e.g., '1'), a number followed by a capital letter (e.g., '1A'), 'Purok', or 'Purok' followed by a dash and a number (e.g., 'Purok-1')";
         return false;
     }
 
 
     if(!isWordFormatValid(barangay)) {
-        barangay_error.textContent = "Invalid format in Barangay. Example: 'Bayanihan'. Each word must start with a capital letter. No special characters allowed."
+        barangay_error.textContent = "Invalid format in Barangay. Example: 'Bayanihan'. Each word must start with a capital letter. All Caps are not allowed. No special characters allowed."
         return false;
     }
 
     if(!isWordFormatValid(city)) {
-        city_error.textContent = "Invalid format in City. Example: 'Cabadbaran City'. Each word must start with a capital letter. No special characters allowed."
+        city_error.textContent = "Invalid format in City. Example: 'Cabadbaran City'. Each word must start with a capital letter.  All Caps are not allowed. No special characters allowed."
         return false;
     }
 
     if(!isWordFormatValid(province)) {
-        province_error.textContent = "Invalid format in Province. Example: 'Agusan Del Norte'. Each word must start with a capital letter. No special characters allowed."
+        province_error.textContent = "Invalid format in Province. Example: 'Agusan Del Norte'. Each word must start with a capital letter.  All Caps are not allowed. No special characters allowed."
         return false;
     }
 
     if(!isWordFormatValid(country)) {
-        country_error.textContent = "Invalid format in Country. Example: 'Philippines'. Each word must start with a capital letter. No special characters allowed."
+        country_error.textContent = "Invalid format in Country. Example: 'Philippines'. Each word must start with a capital letter. All Caps are not allowed. No special characters allowed."
         return false;
     }
 
@@ -640,6 +670,8 @@ function validateRegForm(event) {
     if(!usernameValidation()) return false;
 
     if(!passwordValidation()) return false;
+
+    // Retain all the data in the input fields
 
 
     // Finalization -> get all data from fields after validation

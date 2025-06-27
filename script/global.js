@@ -104,8 +104,23 @@ export function isPasswordMatch(password, reEnteredPassword) {
 }
 
 
+// // Get input data and save to localStorage
+// export function getInputDataAndSave() {
+//   const inputs = document.querySelectorAll("input");
 
-// Service layer
+//   inputs.forEach((input) => {
+//     const name = input.name || input.id; // Use 'name', fallback to 'id'
+//     const value = input.value;
+
+//     if (name) {
+//       localStorage.setItem(name, value);
+//     }
+//   });
+// }
+
+
+
+// Registration function
 const insert = async (data) => {
     const URL = `http://localhost/paquibot/server/registration.php`;
 
@@ -149,7 +164,7 @@ const login = async (data) => {
         const result = await response.json();
 
         if (!response.ok) {
-            // Attach server message if available
+           
             throw new Error(result.message || `HTTP error status: ${response.status}`);
         }
 
@@ -169,7 +184,7 @@ const login = async (data) => {
 };
 
 
-// Services controller
+// Service layer controller
 export const services = async (method, data, action) => {
     const request = method.trim().toUpperCase();
 
