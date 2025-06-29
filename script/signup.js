@@ -478,7 +478,7 @@ function addressValidation() {
     // const pattern = /^((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z]))(\s((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z])))*$/;
     // const pattern = /^((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z]))(?:\s((?:[A-Z][a-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)?)|(?:\d+-[a-zA-Z])))*$/;
     // const pattern = /^(Purok(?:-[0-9A-Z]+| [A-Z][a-z]+)?|[0-9]+(?:-[A-Z])?|[A-Z])$/;
-    const pattern = /^(Purok(-\d+)?|[0-9]+[A-Z]?)$/
+    const purok_pattern = /^(Purok(-\d+)?|[0-9]+[A-Z]?)$/
 
     // Sample tests:
     // console.log(pattern.test("Purok"));           // true
@@ -492,16 +492,24 @@ function addressValidation() {
     // console.log(pattern.test("1-"));              // false
     // console.log(pattern.test("asdasdasdasd"));    // false
 
-    if (!pattern.test(purok)) {
+    if (!purok_pattern.test(purok)) {
         purok_error.textContent = "Please enter a valid value. Allowed formats: a number (e.g., '1'), a number followed by a capital letter (e.g., '1A'), 'Purok', or 'Purok' followed by a dash and a number (e.g., 'Purok-1')";
         return false;
     }
 
 
-    if(!isWordFormatValid(barangay)) {
-        barangay_error.textContent = "Invalid format in Barangay. Example: 'Bayanihan'. Each word must start with a capital letter. All Caps are not allowed. No special characters allowed."
+
+    const barangay_pattern = /^(?:[A-Z][a-zA-Z]*(?: \d+)?|\d+)$/;
+    
+    if(!barangay_pattern.test(barangay)){
+        barangay_error.textContent = "Barangay must follow the pattern: 'Ampayon 3', 'Ampayon', or '3'. Each word must start with a capital letter. No all caps allowed";
         return false;
     }
+
+    // if(!isWordFormatValid(barangay)) {
+    //     barangay_error.textContent = "Invalid format in Barangay. Example: 'Bayanihan'. Each word must start with a capital letter. All Caps are not allowed. No special characters allowed."
+    //     return false;
+    // }
 
     if(!isWordFormatValid(city)) {
         city_error.textContent = "Invalid format in City. Example: 'Cabadbaran City'. Each word must start with a capital letter.  All Caps are not allowed. No special characters allowed."
