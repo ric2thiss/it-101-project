@@ -35,6 +35,164 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
+function validateAllInputFirst() {
+    const form = document.forms['myForm'];
+
+    // Get input values
+    const idnumber = form["idnumber"].value.trim();
+    const firstname = form["firstname"].value.trim();
+    const lastname = form["lastname"].value.trim();
+    const middleinitial = form["middleinitial"].value.trim();
+    const extensionname = form["extensionname"].value.trim();
+    const email = form["email"].value.trim();
+    const sex = form["sex"].value;
+    const age = form["age"].value;
+    const purok = form["purok"].value.trim();
+    const barangay = form["barangay"].value.trim();
+    const city = form["city"].value.trim();
+    const province = form["province"].value.trim();
+    const country = form["country"].value.trim();
+    const zip = form["zip"].value.trim();
+    const username = form["username"].value.trim();
+    const password = form["password"].value.trim();
+    const birthDate = document.getElementById("birthDate").value.trim();
+
+    // Error elements
+    const idnumber_error = document.getElementById("idnumber-error");
+    const firstname_error = document.getElementById("firstname-error");
+    const lastname_error = document.getElementById("lastname-error");
+    const middleinitial_error = document.getElementById("middleinitial-error");
+    const extensionname_error = document.getElementById("extensionname-error");
+    const email_error = document.getElementById("email-error");
+    const sex_error = document.getElementById("sex-error");
+    const birthdate_error = document.getElementById("birthDate-error");
+    const purok_error = document.getElementById("purok-error");
+    const barangay_error = document.getElementById("barangay-error");
+    const city_error = document.getElementById("city-error");
+    const province_error = document.getElementById("province-error");
+    const country_error = document.getElementById("country-error");
+    const zip_error = document.getElementById("zip-error");
+    const username_error = document.getElementById("username-error");
+    const password_error = document.getElementById("password-error");
+
+    let isValid = true;
+
+    if (!idnumber) {
+        idnumber_error.textContent = 'Id number is required!';
+        isValid = false;
+    } else {
+        idnumber_error.textContent = '';
+    }
+
+    if (!firstname) {
+        firstname_error.textContent = 'First name is required!';
+        isValid = false;
+    } else {
+        firstname_error.textContent = '';
+    }
+
+    if (!lastname) {
+        lastname_error.textContent = 'Last name is required!';
+        isValid = false;
+    } else {
+        lastname_error.textContent = '';
+    }
+
+    if (!middleinitial) {
+        middleinitial_error.textContent = 'Middle initial is required!';
+        isValid = false;
+    } else {
+        middleinitial_error.textContent = '';
+    }
+
+    if (!extensionname) {
+        extensionname_error.textContent = 'Extension name is required!';
+        isValid = false;
+    } else {
+        extensionname_error.textContent = '';
+    }
+
+    if (!email) {
+        email_error.textContent = 'Email is required!';
+        isValid = false;
+    } else {
+        email_error.textContent = '';
+    }
+
+    if (!sex) {
+        sex_error.textContent = 'Sex is required!';
+        isValid = false;
+    } else {
+        sex_error.textContent = '';
+    }
+
+    if (!birthDate) {
+        birthdate_error.textContent = 'Birthdate is required!';
+        isValid = false;
+    } else {
+        birthdate_error.textContent = '';
+    }
+
+    if (!purok) {
+        purok_error.textContent = 'Purok is required!';
+        isValid = false;
+    } else {
+        purok_error.textContent = '';
+    }
+
+    if (!barangay) {
+        barangay_error.textContent = 'Barangay is required!';
+        isValid = false;
+    } else {
+        barangay_error.textContent = '';
+    }
+
+    if (!city) {
+        city_error.textContent = 'City is required!';
+        isValid = false;
+    } else {
+        city_error.textContent = '';
+    }
+
+    if (!province) {
+        province_error.textContent = 'Province is required!';
+        isValid = false;
+    } else {
+        province_error.textContent = '';
+    }
+
+    if (!country) {
+        country_error.textContent = 'Country is required!';
+        isValid = false;
+    } else {
+        country_error.textContent = '';
+    }
+
+    if (!zip) {
+        zip_error.textContent = 'ZIP is required!';
+        isValid = false;
+    } else {
+        zip_error.textContent = '';
+    }
+
+    if (!username) {
+        username_error.textContent = 'Username is required!';
+        isValid = false;
+    } else {
+        username_error.textContent = '';
+    }
+
+    if (!password) {
+        password_error.textContent = 'Password is required!';
+        isValid = false;
+    } else {
+        password_error.textContent = '';
+    }
+
+    return isValid;
+}
+
+
 
 function IDNumberValidation(){
     const idNumberInput = document.getElementById("idnumber").value;
@@ -239,20 +397,20 @@ function emailValidation(){
 
 
 function sexValidation(){
-      const form = document.forms["myForm"];
-      const sex = form["sex"].value;
+    const form = document.forms["myForm"];
+    const sex = form["sex"].value;
 
-      const sex_error = document.getElementById("sex-error");
+    const sex_error = document.getElementById("sex-error");
 
-      if(sex_error === null) return console.log("Sex error field is null")
+    if(sex_error === null) return console.log("Sex error field is null")
 
-      if(!sex){
+    if(!sex){
         sex_error.textContent = "Sex is required. Please select your gender identity."
         return false;
-      }
+    }
 
-      sex_error.textContent = ''
-      return true;
+    sex_error.textContent = ''
+    return true;
 }
 
 
@@ -422,7 +580,7 @@ function addressValidation() {
         return false;
     }
 
-    if(!isMaxAndMinLengthValid(barangay, 4, 20)) {
+    if(!isMaxAndMinLengthValid(barangay, 1, 20)) {
         barangay_error.textContent = "Barangay must be between 4 and 20 characters."
         return false;
     }
@@ -657,6 +815,8 @@ if (reenterPasswordField) {
 function validateRegForm(event) {
     event.preventDefault();
 
+    if(!validateAllInputFirst()) return false;
+
     if(!IDNumberValidation()) return false;
 
     if(!firstNameValidation()) return false;
@@ -732,6 +892,7 @@ function validateRegForm(event) {
         if (response.status === 'success') {
             alert(`${response.message}`);
             window.location.href = "login.html"
+            localStorage.clear();
         } else {
             alert(response.message || `Registration Failed. Try Again!`);
         }

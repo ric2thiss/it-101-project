@@ -57,14 +57,13 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"],
+/* input[type="text"],
 input[type="email"],
-input[type="password"],
 input[type="number"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-}
+} */
 
 .full-width {
     grid-column: span 3;
@@ -157,3 +156,24 @@ footer {
   visibility: visible;
   opacity: 1;
 }
+
+.input-holder{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+input[type="password"], input[type="text"],input[type="email"],
+input[type="number"], input[type="date"] {
+    border: none !important;
+    outline: none !important;
+    width: 100%;
+}
+
+
+/* input[type="text"],
+input[type="email"],
+input[type="number"] */

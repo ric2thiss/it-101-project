@@ -25,38 +25,50 @@
       <h2 class="full-width">Personal Information</h2>
 
       <div class="form-group">
-        <label for="idnumber">ID No:</label>
-        <input type="text" name="idnumber" id="idnumber" maxlength="10">
+        <label for="idnumber">ID No: xxxx-xxxx</label>
+        <div class="input-holder">
+          <input type="text" name="idnumber" id="idnumber" maxlength="10">
+        </div>
         <div class="error-message" id="idnumber-error"></div>
       </div>
 
       <div class="form-group">
         <label for="firstname">First Name:</label>
-        <input type="text" name="firstname" id="firstname">
+        <div class="input-holder">
+          <input type="text" name="firstname" id="firstname">
+        </div>
         <div class="error-message" id="firstname-error"></div>
       </div>
 
       <div class="form-group">
         <label for="lastname">Last Name:</label>
-        <input type="text" name="lastname" id="lastname">
+        <div class="input-holder">
+          <input type="text" name="lastname" id="lastname">
+        </div>        
         <div class="error-message" id="lastname-error"></div>
       </div>
 
       <div class="form-group">
         <label for="middleinitial">Middle Initial:</label>
-        <input type="text" name="middleinitial" id="middleinitial">
+        <div class="input-holder">
+          <input type="text" name="middleinitial" id="middleinitial">
+        </div>
         <div class="error-message" id="middleinitial-error"></div>
       </div>
 
       <div class="form-group">
         <label for="extensionname">Extension Name:</label>
-        <input type="text" name="extensionname" id="extensionname">
+        <div class="input-holder">
+          <input type="text" name="extensionname" id="extensionname">
+        </div>
         <div class="error-message" id="extensionname-error"></div>
       </div>
 
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" name="email" id="email">
+          <div class="input-holder">
+            <input type="email" name="email" id="email">
+          </div>
         <div class="error-message" id="email-error"></div>
       </div>
 
@@ -71,7 +83,10 @@
 
       <div class="form-group">
         <label for="birthDate">Birth Date:</label>
-        <input type="date" name="birthDate" id="birthDate">
+
+        <div class="input-holder">
+          <input type="date" name="birthDate" id="birthDate">
+        </div>
         
         <!-- This will show the calculated age -->
         <input type="text" id="birthDateData" name="age" readonly placeholder="Your age will appear here">
@@ -88,37 +103,50 @@
             <span class="tooltiptext"> Please enter a valid value. Allowed formats: a number (e.g., '1'), a number followed by a capital letter (e.g., '1A'), 'Purok', or 'Purok' followed by a dash and a number (e.g., 'Purok-1')</span>
           </span>
         </label>
-        <input type="text" name="purok" id="purok">
+        
+        <div class="input-holder">
+          <input type="text" name="purok" id="purok">
+        </div>
          <div class="error-message" id="purok-error"></div>
       </div>
 
       <div class="form-group">
         <label for="barangay">Barangay:</label>
-        <input type="text" name="barangay" id="barangay">
+        <div class="input-holder">
+          <input type="text" name="barangay" id="barangay">
+        </div>
         <div class="error-message" id="barangay-error"></div>
       </div>
 
       <div class="form-group">
         <label for="city">City:</label>
-        <input type="text" name="city" id="city">
+        <div class="input-holder">
+          <input type="text" name="city" id="city">        
+        </div>
         <div class="error-message" id="city-error"></div>
       </div>
 
       <div class="form-group">
         <label for="province">Province:</label>
-        <input type="text" name="province" id="province">
+        <div class="input-holder">
+          <input type="text" name="province" id="province">
+        </div>
         <div class="error-message" id="province-error"></div>
       </div>
 
       <div class="form-group">
         <label for="country">Country:</label>
-        <input type="text" name="country" id="country">
+        <div class="input-holder">
+          <input type="text" name="country" id="country">
+        </div>
         <div class="error-message" id="country-error"></div>
       </div>
 
       <div class="form-group">
         <label for="zip">ZIP Code:</label>
-        <input type="number" name="zip" id="zip">
+        <div class="input-holder">
+          <input type="number" name="zip" id="zip">
+        </div>
         <div class="error-message" id="zip-error"></div>
       </div>
 
@@ -126,7 +154,9 @@
 
       <div class="form-group">
         <label for="username">Username:</label>
-        <input type="text" name="username" id="username">
+        <div class="input-holder">
+          <input type="text" name="username" id="username">
+        </div>
         <div class="error-message" id="username-error"></div>
       </div>
 
@@ -135,8 +165,8 @@
         <div class="input-holder">
           <input type="password" name="password" id="password">
           <span>
-            <input type="checkbox" id="show-password" class="checkbox">
-            <label for="show-password">Show password</label>
+            <input type="checkbox" id="show-password" class="checkbox" hidden>
+            <label for="show-password"><i class="fa-solid fa-eye"></i></label>
           </span>
         </div>
         <div class="error-message" id="password-error"></div>
@@ -144,7 +174,9 @@
 
       <div class="form-group">
         <label for="reenterpassword">Re-enter Password: <span id="password-checker-matched"></span></label>
-          <input type="password" name="reenterpassword" id="reenterpassword">
+          <div class="input-holder">
+            <input type="password" name="reenterpassword" id="reenterpassword">
+          </div>
           <div class="error-message" id="reenterpassword-error"></div>
       </div>
 
@@ -161,17 +193,25 @@
 
   <script type="module" src="../script/signup.js"></script>
   <script>
-    const show_password = document.getElementById("show-password");
+    
+    const show_password = document.getElementById("show-password"); // checkbox
+    const eye_icon = document.querySelector("label[for='show-password'] i");
 
-    show_password.addEventListener("click", () => {
-      if (show_password.checked) {
-        document.getElementById("password").type = "text";
-        document.getElementById("reenterpassword").type = "text";
-      } else {
-        document.getElementById("password").type = "password";
-        document.getElementById("reenterpassword").type = "password";
-      }
+    show_password.addEventListener("change", () => {
+      const passwordField = document.getElementById("password");
+      const reenterField = document.getElementById("reenterpassword");
+
+      const show = show_password.checked;
+
+      // Toggle password visibility
+      passwordField.type = show ? "text" : "password";
+      if (reenterField) reenterField.type = show ? "text" : "password";
+
+      // Toggle eye icon class
+      eye_icon.classList.toggle("fa-eye", !show);
+      eye_icon.classList.toggle("fa-eye-slash", show);
     });
+
 
   </script>
 </body>
