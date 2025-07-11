@@ -35,6 +35,8 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
+
 function validateAllInputFirst() {
     const form = document.forms['myForm'];
 
